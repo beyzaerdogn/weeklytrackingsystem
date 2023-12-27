@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="134fd2a2350249ef8e73e64990c5f0b7" Name="Diagram1">
+        <EntityTypeShape EntityType="İsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="İsTakipDBModel.durumlar_" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="İsTakipDBModel.isler" Width="1.5" PointX="6.375" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="İsTakipDBModel.Personeller" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="İsTakipDBModel.yetkiTurid" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="İsTakipDBModel.FK_Personeller_Birimler" ManuallyRouted="false" />
+        <AssociationConnector Association="İsTakipDBModel.FK_isler_durumlar_" ManuallyRouted="false" />
+        <AssociationConnector Association="İsTakipDBModel.FK_isler_Personeller" ManuallyRouted="false" />
+        <AssociationConnector Association="İsTakipDBModel.FK_Personeller_yetkiTurid" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="İsTakipDBModel.sysdiagrams" Width="1.5" PointX="5.375" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

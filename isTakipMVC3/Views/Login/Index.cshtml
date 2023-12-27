@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>İŞ TAKİP SİSTEME GİRİŞ</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sign-in.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #ccc; /* Gri arka plan rengi */
+            color: #000; /* Siyah metin rengi */
+            position: relative; /* Göreceli konumlandırma */
+            overflow: hidden; /* Sayfa kenarlarından taşan içerikleri gizle */
+        }
+
+        #snowflake-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; /* Tam genişlik */
+            text-align: center;
+            z-index: 1; /* Ön planda kalmasını sağlar */
+        }
+
+        #snowflake-svg {
+            width: 50px; /* Kar tanesi SVG genişliği */
+            height: 50px; /* Kar tanesi SVG yüksekliği */
+            fill: #fff;
+        }
+
+        .form-signin-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2; /* Kar tanesi'nin üzerinde kalmasını sağlar */
+        }
+
+        .form-signin {
+            background-color: #fff; /* Beyaz form arka plan rengi */
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+            .form-signin label,
+            .form-signin input {
+                color: #000 !important; /* Kullanıcı adı ve şifre metin rengi siyah */
+            }
+
+        .btn-primary {
+            background-color: #d9534f; /* Kırmızı buton rengi */
+            border-color: #d9534f; /* Kırmızı buton kenarlık rengi */
+        }
+
+            .btn-primary:hover {
+                background-color: #c9302c; /* Kırmızı buton hover rengi */
+                border-color: #ac2925; /* Kırmızı buton hover kenarlık rengi */
+            }
+
+        h1 {
+            color: #000; /* Siyah metin rengi */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="snowflake-container">
+        <svg id="snowflake-svg" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-snow2" viewBox="0 0 16 16">
+            <path d="M8 16a.5.5 0 0 1-.5-.5v-1.293l-.646.647a.5.5 0 0 1-.707-.708L7.5 12.793v-1.086l-.646.647a.5.5 0 0 1-.707-.708L7.5 10.293V8.866l-1.236.713-.495 1.85a.5.5 0 1 1-.966-.26l.237-.882-.94.542-.496 1.85a.5.5 0 1 1-.966-.26l.237-.882-1.12.646a.5.5 0 0 1-.5-.866l1.12-.646-.884-.237a.5.5 0 1 1 .26-.966l1.848.495.94-.542-.882-.237a.5.5 0 1 1 .258-.966l1.85.495L7 8l-1.236-.713-1.849.495a.5.5 0 1 1-.258-.966l.883-.237-.94-.542-1.85.495a.5.5 0 0 1-.258-.966l.883-.237-1.12-.646a.5.5 0 1 1 .5-.866l1.12.646-.237-.883a.5.5 0 0 1 .966-.258l.495 1.849.94.542-.236-.883a.5.5 0 0 1 .966-.258l.495 1.849 1.236.713V5.707L6.147 4.354a.5.5 0 1 1 .707-.708l.646.647V3.207L6.147 1.854a.5.5 0 1 1 .707-.708l.646.647V.5a.5.5 0 0 1 1 0v1.293l.647-.647a.5.5 0 1 1 .707.708L8.5 3.207v1.086l.647-.647a.5.5 0 1 1 .707.708L8.5 5.707v1.427l1.236-.713.495-1.85a.5.5 0 1 1 .966.26l-.236.882.94-.542.495-1.85a.5.5 0 1 1 .966.26l-.236.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.883.237a.5.5 0 1 1-.26.966l-1.848-.495-.94.542.883.237a.5.5 0 1 1-.26.966l-1.848-.495L9 8l1.236.713 1.849-.495a.5.5 0 0 1 .259.966l-.883.237.94.542 1.849-.495a.5.5 0 0 1 .259.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.236.883a.5.5 0 1 1-.966.258l-.495-1.849-.94-.542.236.883a.5.5 0 0 1-.966.258L9.736 9.58 8.5 8.866v1.427l1.354 1.353a.5.5 0 0 1-.707.708l-.647-.647v1.086l1.354 1.353a.5.5 0 0 1-.707.708l-.647-.647V15.5a.5.5 0 0 1-.5.5z" />
+        </svg>
+    </div>
+
+    <div class="form-signin-container">
+        <main class="form-signin w-100 m-auto">
+            @using (Html.BeginForm("index", "login", FormMethod.Post))
+            {
+                <h1 class="h3 mb-3 fw-normal">İş Takip Sistemi Giriş Sayfası</h1>
+                <br />
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="kullaniciAd" name="kullaniciAd" />
+                    <label for="kullaniciAd">Kullanıcı Adınız</label>
+                </div>
+                <br />
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="parola" name="parola" />
+                    <label for="Password">Parola</label>
+                </div>
+                <br />
+                <button class="btn btn-primary w-100 py-2" type="submit">Giriş</button>
+                <br /><br />
+                if (ViewBag.mesaj != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.mesaj
+                    </div>
+                }
+            }
+        </main>
+    </div>
+   
+    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
