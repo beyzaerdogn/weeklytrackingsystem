@@ -31,5 +31,6 @@ namespace isTakipMVC3.Models
         public virtual DbSet<Personeller> Personeller { get; set; }
         public virtual DbSet<yetkiTurid> yetkiTurid { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public object Dosyalar { get; internal set; }
     }
 }

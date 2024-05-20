@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/LayoutCalisan.cshtml";
+}
+
+<h2>@ViewBag.birimAdı birimi için çalışansınız</h2>
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var i in ViewBag.isler)
+        {
+            using (Html.BeginForm("Index", "Calisan", FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-12 col-xs-12" }))
+            {
+                <div class="card border-info">
+                    <div class="card-header text-center">
+                        Yeni İş :)
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="isId" value="@i.isId" />
+                        <div class="mb-3">
+                            <h5 class="card-title">@i.isBaslık</h5>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-outline-info">Oku</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

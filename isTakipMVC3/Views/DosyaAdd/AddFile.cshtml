@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "UploadFile";
+}
+<h2>UploadFile</h2>
+@using (Html.BeginForm("AddFile", "DosyaAdd", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.TextBox("file", "", new { type = "file" }) <br />
+        <input type="submit" value="Yükle" />
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info mt-3">
+        @ViewBag.Message
+    </div>
+}

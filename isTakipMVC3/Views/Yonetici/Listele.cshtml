@@ -4,30 +4,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @*işleri listelemek için kullancaz*@
-<div class="container mt-5"> 
+<div class="container mt-5">
     <div class="mb-3">
-        <h3>@ViewBag.personel.personelAdSoyad işleri</h3>
+        <h3>@ViewBag.personeller.personelAdSoyad işleri</h3>
     </div>
-    @foreach (var i in ViewBag.isler)
+    @if (ViewBag.isSayisi != 0)
+    {
+
+       foreach (var i in ViewBag.isler)
+       {
+        <div class="card">
+            <div class="card-header bg-black  text-center text-white">
+                @i.isBaslık
+                <div>
+            </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">iş açıklama: @i.isAcıklama </li>
+                    <li class="list-group-item">başlanan ve iletilen tarih :@i.baslanan_ve_iletilentarih.ToString("dd MMMM yyyy HH:mm:ss")</li>
+                    <li class="list-group-item">bitirilen ve yapılan tarih :@(i.bitirilen_ve_yapılantarih != null ? i.bitirilen_ve_yapılantarih.ToString("dd MMMM yyyy hh:mm") : "Henüz girilmedi")</li>
+                    <li class="list-group-item">İş Durumu  : @i.durumlar_.durumlarAd</li>
+                    <li class="list-group-item">İş Yorumu  : @i.isYorum</li>
+                </ul>
+            </div>
+        </div>
+       }
+    }
+else
             {
-                <div class="card">
-                    <div class="card-header bg-black text-center text-white">
-                        @i.isBaslik
-                        <div>
-
-                        </div class ="card-body" >
-                        <ul class="list-group list-group-flush" >
-                            <li class="list-group-item">@i.isAcıklama</li>
-                            <li class="list-group-item">başlanan ve iletilen tarih : @i.baslanan ve iletilentarih</li>
-                            <li class="list-group-item">bitirilen ve yapılan tarih: @i.bitirilen ve yapılantarih</li>
-                            <li class="list-group-item">İş Durumu      : @i.isDurumİd</li>
-
-                        </ul>
-                    </div>
-                </div>
+<div class="alert alert-secondary" role="alert">
+    Henüz iş verilmemiş
+</div>
+      
             }
-
-
-
 </div>
 

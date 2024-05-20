@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Takip";
+    Layout = "~/Views/Shared/LayoutCalisan.cshtml";
+
+
+    string style(int? durumId)
+    {
+        if (durumId == 1)
+        {
+            return "rosybrown";
+        }
+        else if (durumId == 2)
+        {
+            return "dimgray";
+        }
+        else
+        {
+            return "lightseagreen";
+        }
+    }
+
+}
+
+@model isTakipMVC3.Models.IsDurumModel
+
+<div class="container mt-5">
+    @foreach (var isDurum in Model.isDurumlar)
+    {
+        <div class="card" style="background-color:@style(isDurum.Id)">
+            <div class="card-header text-center">
+                @isDurum.isBaslık
+                <div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">@isDurum.isAcıklama </li>
+                    <li class="list-group-item">başlanan ve iletilen tarih : @isDurum.baslanan_ve_iletilentarih</li>
+                    <li class="list-group-item">bitirilen ve yapılan tarih : @isDurum.bitirilen_ve_yapılantarih</li>
+                    <li class="list-group-item">İş Durumu : @isDurum.durumlarAd</li>
+                    <li class="list-group-item">İş Yorumu : @isDurum.isYorum  </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>

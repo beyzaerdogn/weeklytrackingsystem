@@ -30,6 +30,8 @@
           <Property Name="baslanan ve iletilentarih" Type="datetime" />
           <Property Name="bitirilen ve yapılantarih" Type="datetime" />
           <Property Name="isDurumİd" Type="int" />
+          <Property Name="isYorum" Type="nvarchar(max)" />
+          <Property Name="isOkunma" Type="bit" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>
@@ -164,6 +166,8 @@
           <Property Name="isDurumİd" Type="Int32" />
           <NavigationProperty Name="durumlar_" Relationship="Self.FK_isler_durumlar_" FromRole="isler" ToRole="durumlar_" />
           <NavigationProperty Name="Personeller" Relationship="Self.FK_isler_Personeller" FromRole="isler" ToRole="Personeller" />
+          <Property Name="isYorum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isOkunma" Type="Boolean" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>
@@ -294,6 +298,8 @@
           <EntitySetMapping Name="isler">
             <EntityTypeMapping TypeName="İsTakipDBModel.isler">
               <MappingFragment StoreEntitySet="isler">
+                <ScalarProperty Name="isOkunma" ColumnName="isOkunma" />
+                <ScalarProperty Name="isYorum" ColumnName="isYorum" />
                 <ScalarProperty Name="isId" ColumnName="isId" />
                 <ScalarProperty Name="isBaslık" ColumnName="isBaslık" />
                 <ScalarProperty Name="isAcıklama" ColumnName="isAcıklama" />
