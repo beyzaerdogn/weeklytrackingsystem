@@ -1,30 +1,318 @@
 ﻿@{
     ViewBag.Title = "Yap";
     Layout = "~/Views/Shared/LayoutCalisan.cshtml";
-    isTakipMVC3.Models.isler i = @ViewBag.isler;
+    var i = ViewBag.isler as isTakipMVC3.Models.isler;
 }
 
 <div class="container mt-5">
-        @using (Html.BeginForm("Yap", "Calisan", FormMethod.Post))
+    @if (i != null)
+    {
+        using (Html.BeginForm("Yap", "Calisan", FormMethod.Post, new { enctype = "multipart/form-data", id = "descriptionForm" }))
         {
             <div class="card">
-                <div class="card-header text-center">
+                <div class="card-header text-center bg-light">
                     @i.isBaslık
                 </div>
                 <div class="card-body">
-                    @i.isAcıklama
-                    <input type="hidden" name="isId" value="@i.isId" />
-                    <div class="mb-3">İş Açıklaması : @i.isAcıklama</div>
                     <div class="mb-3">
-                        <label for="isYorum" class="form-label">Yorum Giriniz :</label>
-                        <input type="text" class="form-control" id="isYorum" name="isYorum" />
+                        <label class="form-label">Yönetici İş Açıklaması:</label>
+                        <p>
+                            @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)
+                        </p>
                     </div>
-                </div>
-                <div class="card-footer text-center">
-                    <button type="submit" class="btn btn-outline-success">Tamamla</button>
                 </div>
             </div>
             <br />
         }
-    
+
+        using (Html.BeginForm("Yap", "Calisan", FormMethod.Post, new { enctype = "multipart/form-data", id = "commentForm" }))
+        {
+            <div class="card">
+                <div class="card-body">
+                    <input type="hidden" name="isId" value="@i.isId" />
+
+                    <div class="mb-3">
+                        <label for="isYorum" class="form-label">Yorum Giriniz :</label>
+                        <textarea class="form-control" id="isYorum" name="isYorum" rows="2" style="height: auto; resize: none;"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">PDF dosyası giriniz:</label>
+                        <input type="file" id="fileInput" name="file" class="form-control" accept="application/pdf" />
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-info mt-3">
+                            @ViewBag.Message
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <input type="submit" class="btn btn-warning btn-lg" name="button" value="Guncelle" onclick="return validateForm('Guncelle');" />
+                    <input type="submit" class="btn btn-success btn-lg" name="button" value="Tamamla" onclick="return validateForm('Tamamla');" />
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Hata: İş bilgileri bulunamadı.
+        </div>
+    }
 </div>
+
+<script>
+    function validateForm(buttonType) {
+        var isYorum = document.getElementById("isYorum").value.trim();
+        if (isYorum === "") {
+            alert("Lütfen bir yorum giriniz.");
+            return false;
+        }
+
+        if (buttonType === 'Tamamla') {
+            var fileInput = document.getElementById("fileInput");
+            if (fileInput.files.length === 0) {
+                alert("Lütfen yüklenecek dosyayı seçin.");
+                return false;
+            }
+
+            var file = fileInput.files[0];
+            var maxSize = 200 * 1024 * 1024; // 200MB in bytes
+            if (file.size > maxSize) {
+                alert("Dosya boyutu 200 MB'ı geçmemelidir.");
+                return false;
+            }
+
+            if (!confirm("Tamamlamak istediğinizden emin misiniz?")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+
+
+@*@{
+        ViewBag.Title = "Yap";
+        Layout = "~/Views/Shared/LayoutCalisan.cshtml";
+        isTakipMVC3.Models.isler i = ViewBag.isler;
+    }
+
+    <div class="container mt-5">
+        @using (Html.BeginForm("Yap", "Calisan", FormMethod.Post, new { enctype = "multipart/form-data", id = "completionForm" }))
+        {
+            <div class="card">
+                <div class="card-header text-center bg-light">
+                    @i.isBaslık
+                </div>
+                <div class="card-body">
+                    <input type="hidden" name="isId" value="@i.isId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">İş Açıklaması:</label>
+                        <p>
+                            @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="isYorum" class="form-label">Yorum Giriniz :</label>
+                        <textarea class="form-control" id="isYorum" name="isYorum" rows="2" style="height: auto; resize: none;"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">PDF dosyası giriniz:</label>
+                        @Html.TextBox("file", "", new { type = "file", id = "fileInput", accept = "application/pdf", @class = "form-control" })
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-info mt-3">
+                            @ViewBag.Message
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <input type="submit" class="btn btn-warning btn-lg" name="button" value="Guncelle" onclick="return validateForm('Guncelle');">
+                    <input type="submit" class="btn btn-success btn-lg" name="button" value="Tamamla" onclick="return validateForm('Tamamla');">
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+
+    <script>
+        function validateForm(buttonType) {
+            var isYorum = document.getElementById("isYorum").value;
+            if (isYorum.trim() === "") {
+                alert("Lütfen bir yorum giriniz.");
+                return false;
+            }
+
+            if (buttonType === 'Tamamla') {
+                var fileInput = document.getElementById("fileInput");
+                if (fileInput.files.length === 0) {
+                    alert("Lütfen yüklenecek dosyayı seçin.");
+                    return false;
+                }
+
+                var file = fileInput.files[0];
+                var maxSize = 200 * 1024 * 1024; // 200MB in bytes
+                if (file.size > maxSize) {
+                    alert("Dosya boyutu 200 MB'ı geçmemelidir.");
+                    return false;
+                }
+
+                if (!confirm("Tamamlamak istediğinizden emin misiniz?")) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
+
+
+
+
+
+
+*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@{
+        ViewBag.Title = "Yap";
+        Layout = "~/Views/Shared/LayoutCalisan.cshtml";
+        isTakipMVC3.Models.isler i = ViewBag.isler;
+    }
+
+    <div class="container mt-5">
+        @using (Html.BeginForm("Yap", "Calisan", FormMethod.Post, new { enctype = "multipart/form-data", id = "completionForm" }))
+        {
+            <div class="card">
+                <div class="card-header text-center bg-light">
+                    @i.isBaslık
+                </div>
+                <div class="card-body">
+                    <input type="hidden" name="isId" value="@i.isId" />
+
+
+                  <div class="mb-3">
+                    <label class="form-label">İş Açıklaması:</label>
+                    <p>
+                        @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)
+                    </p>
+                </div>
+
+                    <div class="mb-3">
+                        <label for="isYorum" class="form-label">Yorum Giriniz :</label>
+                        <textarea class="form-control" id="isYorum" name="isYorum" rows="2" style="height: auto; resize: none;"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fileInput" class="form-label">PDF dosyası giriniz:</label>
+                        @Html.TextBox("file", "", new { type = "file", id = "fileInput", accept = "application/pdf", @class = "form-control" })
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-info mt-3">
+                            @ViewBag.Message
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <input type="submit" class="btn btn-warning btn-lg" name="button" value="Guncelle">
+                    <input type="submit" onclick="confirmCompletion()" class="btn btn-success btn-lg" name="button" value="Tamamla">
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+
+    <script>
+
+
+        function confirmCompletion() {
+            if (confirm("Tamamlamak istediğinizden emin misiniz?")) {
+                document.getElementById("completionForm").submit();
+            }
+        }
+        document.getElementById("completionForm").onsubmit = function (event) {
+            var fileInput = document.getElementById("fileInput");
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var maxSize = 200 * 1024 * 1024; // 200MB in bytes
+                if (file.size > maxSize) {
+                    alert("Dosya boyutu 200 MB'ı geçmemelidir.");
+                    event.preventDefault(); // Prevent the form from submitting
+                }
+            }
+        };
+    </script>
+*@

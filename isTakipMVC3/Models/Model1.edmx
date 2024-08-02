@@ -25,13 +25,14 @@
           </Key>
           <Property Name="isId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="isBaslık" Type="nvarchar(max)" />
-          <Property Name="isAcıklama" Type="nvarchar(max)" />
+          <Property Name="isAciklama" Type="nvarchar(max)" />
           <Property Name="isPersonelid" Type="int" />
           <Property Name="baslanan ve iletilentarih" Type="datetime" />
           <Property Name="bitirilen ve yapılantarih" Type="datetime" />
           <Property Name="isDurumİd" Type="int" />
           <Property Name="isYorum" Type="nvarchar(max)" />
           <Property Name="isOkunma" Type="bit" />
+          <Property Name="fileName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>
@@ -159,7 +160,6 @@
           </Key>
           <Property Name="isId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="isBaslık" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="isAcıklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isPersonelid" Type="Int32" />
           <Property Name="baslanan_ve_iletilentarih" Type="DateTime" Precision="3" />
           <Property Name="bitirilen_ve_yapılantarih" Type="DateTime" Precision="3" />
@@ -168,6 +168,8 @@
           <NavigationProperty Name="Personeller" Relationship="Self.FK_isler_Personeller" FromRole="isler" ToRole="Personeller" />
           <Property Name="isYorum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isOkunma" Type="Boolean" />
+          <Property Name="fileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="isAciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Personeller">
           <Key>
@@ -298,11 +300,12 @@
           <EntitySetMapping Name="isler">
             <EntityTypeMapping TypeName="İsTakipDBModel.isler">
               <MappingFragment StoreEntitySet="isler">
+                <ScalarProperty Name="isAciklama" ColumnName="isAciklama" />
+                <ScalarProperty Name="fileName" ColumnName="fileName" />
                 <ScalarProperty Name="isOkunma" ColumnName="isOkunma" />
                 <ScalarProperty Name="isYorum" ColumnName="isYorum" />
                 <ScalarProperty Name="isId" ColumnName="isId" />
                 <ScalarProperty Name="isBaslık" ColumnName="isBaslık" />
-                <ScalarProperty Name="isAcıklama" ColumnName="isAcıklama" />
                 <ScalarProperty Name="isPersonelid" ColumnName="isPersonelid" />
                 <ScalarProperty Name="baslanan_ve_iletilentarih" ColumnName="baslanan ve iletilentarih" />
                 <ScalarProperty Name="bitirilen_ve_yapılantarih" ColumnName="bitirilen ve yapılantarih" />

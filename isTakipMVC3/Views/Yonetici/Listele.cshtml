@@ -1,40 +1,53 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Listele";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*işleri listelemek için kullancaz*@
+
 <div class="container mt-5">
     <div class="mb-3">
         <h3>@ViewBag.personeller.personelAdSoyad işleri</h3>
     </div>
+
     @if (ViewBag.isSayisi != 0)
     {
-
-       foreach (var i in ViewBag.isler)
-       {
-        <div class="card">
-            <div class="card-header bg-black  text-center text-white">
-                @i.isBaslık
-                <div>
-            </div>
+        foreach (var i in ViewBag.isler)
+        {
+            <div class="card mb-3">
+                <div class="card-header bg-gray-dark text-center text-white">
+                    @i.isBaslık
+                </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">iş açıklama: @i.isAcıklama </li>
-                    <li class="list-group-item">başlanan ve iletilen tarih :@i.baslanan_ve_iletilentarih.ToString("dd MMMM yyyy HH:mm:ss")</li>
-                    <li class="list-group-item">bitirilen ve yapılan tarih :@(i.bitirilen_ve_yapılantarih != null ? i.bitirilen_ve_yapılantarih.ToString("dd MMMM yyyy hh:mm") : "Henüz girilmedi")</li>
-                    <li class="list-group-item">İş Durumu  : @i.durumlar_.durumlarAd</li>
-                    <li class="list-group-item">İş Yorumu  : @i.isYorum</li>
+                    <li class="list-group-item"><strong>İş Açıklama:</strong> @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)</li>
+
+                    <li class="list-group-item"><strong>Başlanan ve İletilen Tarih:</strong> @i.baslanan_ve_iletilentarih.ToString("dd MMMM yyyy HH:mm:ss")</li>
+                    <li class="list-group-item"><strong>Bitirilen ve Yapılan Tarih:</strong> @(i.bitirilen_ve_yapılantarih != null ? i.bitirilen_ve_yapılantarih.ToString("dd MMMM yyyy HH:mm:ss") : "Henüz girilmedi")</li>
+                    <li class="list-group-item"><strong>İş Durumu:</strong> @i.durumlar_.durumlarAd</li>
+                    <li class="list-group-item"><strong>İş Yorumu:</strong> @(string.IsNullOrEmpty(i.isYorum) ? "Yorum yapılmadı" : i.isYorum)</li>
+                    @if (i.fileName != null)
+                    {
+                        <li class="list-group-item">
+                            @using (Html.BeginForm("DosyaIndir", "Yonetici", new { dosyaAdi = i.fileName }, FormMethod.Post))
+                            {
+                                <button class="btn btn-outline-primary btn-sm" type="submit">Dosya Indir</button>
+                            }
+                        </li>
+                    }
+                    <li class="list-group-item">
+                        @using (Html.BeginForm("Sil", "Yonetici", new { id = i.isId }, FormMethod.Post))
+                        {
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu işi silmek istediğinizden emin misiniz?');">Sil</button>
+                        }
+                    </li>
+
                 </ul>
             </div>
-        </div>
-       }
+        }
     }
-else
-            {
-<div class="alert alert-secondary" role="alert">
-    Henüz iş verilmemiş
-</div>
-      
-            }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Henüz iş verilmemiş
+        </div>
+    }
 </div>
 

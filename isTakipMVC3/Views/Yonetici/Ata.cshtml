@@ -6,7 +6,7 @@
 
 <div class="container mt-5">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header bg-gradient">
             @ViewBag.birimAdı birimi için İş Atama İşlemi
         </div>
         @using (Html.BeginForm("Ata", "Yonetici", FormMethod.Post))
@@ -14,13 +14,15 @@
             <div class="card-body">
                 <div class="mb-5">
                     <label for="isBaslik" class="form-label">İş Başlığını Giriniz</label>
-                    <input type="text" class="form-control" id="isBaslik" name="isBaslık" />
+                    <input type="text" class="form-control" id="isBaslik" name="isBaslık" required />
+                  
                 </div>
 
                 <div class="mb-5">
                     <label for="isAciklama" class="form-label">İş Açıklamasını Giriniz</label>
                     <!-- Fix: Change <text> to <textarea> -->
-                    <textarea class="form-control" id="isAciklama" name="isAcıklama"></textarea>
+                    <textarea class="form-control" id="isAciklama" name="isAciklama" required></textarea>
+                    
                 </div>
 
                 <div class="mb-5">

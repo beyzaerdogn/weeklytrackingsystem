@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -22,18 +18,33 @@ namespace isTakipMVC3.Controllers
         {
             try
             {
-                if (file.ContentLength > 0)
+                if (file != null && file.ContentLength > 0)
                 {
+                    // Set the file size limit to 200MB
+                    const int maxFileSize = 200 * 1024 * 1024; // 200MB in bytes
+
+                    if (file.ContentLength > maxFileSize)
+                    {
+                        ViewBag.Message = "Dosya boyutu 200 MB'ı geçmemelidir.";
+                        return View();
+                    }
+
                     string _FileName = Path.GetFileName(file.FileName);
                     string _path = Path.Combine(Server.MapPath("~/web/uploads"), _FileName);
                     file.SaveAs(_path);
+
+                    ViewBag.Message = "Dosya başarıyla yüklendi!!";
                 }
-                ViewBag.Message = "File Uploaded Successfully!!";
+                else
+                {
+                    ViewBag.Message = "Lütfen yüklenecek dosyayı seçin.";
+                }
+
                 return View();
             }
-            catch
+            catch (Exception ex)
             {
-                ViewBag.Message = "File upload failed!!";
+                ViewBag.Message = "Dosya yükleme başarısız oldu! Hata:" + ex.Message;
                 return View();
             }
         }

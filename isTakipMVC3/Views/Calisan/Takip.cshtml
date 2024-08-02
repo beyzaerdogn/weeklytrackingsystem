@@ -2,43 +2,476 @@
     ViewBag.Title = "Takip";
     Layout = "~/Views/Shared/LayoutCalisan.cshtml";
 
-
-    string style(int? durumId)
+    string cardColor(int? durumId)
     {
         if (durumId == 1)
         {
-            return "rosybrown";
+            return "card-custom bg-lightgray";
         }
         else if (durumId == 2)
         {
-            return "dimgray";
+            return "card-custom bg-bisque";
+        }
+        else if (durumId == 3)
+        {
+            return "card-custom bg-lightgreen";
         }
         else
         {
-            return "lightseagreen";
+            return "card-custom bg-light"; // varsayılan
         }
     }
-
 }
 
 @model isTakipMVC3.Models.IsDurumModel
 
+<style>
+    .card-custom {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* daha belirgin gölge */
+        transition: transform 0.3s ease;
+    }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+
+    .bg-bisque {
+        background-color: rosybrown; /* rosybrown */
+    }
+
+
+
+    .bg-lightgray {
+        background-color: lavender; /* açık gri */
+    }
+
+    .bg-lightgreen {
+        background-color: #d9ead3; /* lightgreen */
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .list-group-item-action.active {
+        background-color: #87CEEB; /* Açık mavi arka plan rengi */
+        color: #fff; /* Beyaz yazı rengi */
+        border-color: #87CEEB; /* Açık mavi kenarlık rengi */
+    }
+
+    .list-group-item-action {
+        background-color: #f8f9fa; /* Varsayılan arka plan rengi */
+        color: #212529; /* Varsayılan yazı rengi */
+        border-color: #dee2e6; /* Varsayılan kenarlık rengi */
+    }
+
+        .list-group-item-action:hover {
+            background-color: #e9ecef; /* Varsayılan hover arka plan rengi */
+        }
+</style>
+
 <div class="container mt-5">
-    @foreach (var isDurum in Model.isDurumlar)
-    {
-        <div class="card" style="background-color:@style(isDurum.Id)">
-            <div class="card-header text-center">
-                @isDurum.isBaslık
-                <div>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">@isDurum.isAcıklama </li>
-                    <li class="list-group-item">başlanan ve iletilen tarih : @isDurum.baslanan_ve_iletilentarih</li>
-                    <li class="list-group-item">bitirilen ve yapılan tarih : @isDurum.bitirilen_ve_yapılantarih</li>
-                    <li class="list-group-item">İş Durumu : @isDurum.durumlarAd</li>
-                    <li class="list-group-item">İş Yorumu : @isDurum.isYorum  </li>
-                </ul>
+    <div class="row">
+        <!-- Sol taraftaki menü -->
+        <div class="col-md-3">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active bg-gray-dark" id="list-all-list" data-bs-toggle="list" href="#list-all" role="tab">Tümü</a>
+                <a class="list-group-item list-group-item-action bg-lightgray" id="list-completed-list" data-bs-toggle="list" href="#list-completed" role="tab">Tamamlanan İşler</a>
+                <a class="list-group-item list-group-item-action bg-light" id="list-updated-list" data-bs-toggle="list" href="#list-updated" role="tab">Güncellenen İşler</a>
+                <a class="list-group-item list-group-item-action bg-gradient" id="list-unfinished-list" data-bs-toggle="list" href="#list-unfinished" role="tab">Yapılmamış İşler</a>
             </div>
         </div>
-    }
+        <!-- İş kartları -->
+        <div class="col-md-9">
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Tüm işler -->
+                <div class="tab-pane fade show active" id="list-all" role="tabpanel" aria-labelledby="list-all-list">
+                    @if (Model.isDurumlar != null && Model.isDurumlar.Any())
+                    {
+                        foreach (var isDurum in Model.isDurumlar)
+                        {
+                            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                                <div class="@cardColor(isDurum.Id)">
+                                    <div class="card-header">
+                                        <i class="bi bi-envelope-fill text-muted"></i> <!-- Bootstrap Icons'taki mektup ikonu -->
+                                        <h5 class="card-title">@isDurum.isBaslık</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            Henüz iş verilmedi.
+                        </div>
+                    }
+                </div>
+
+                <!-- Yapılmamış İşler Sekmesi -->
+                <div class="tab-pane fade" id="list-unfinished" role="tabpanel" aria-labelledby="list-unfinished-list">
+                    @if (Model.isDurumlar != null && Model.isDurumlar.Any(i => i.Id == 1))
+                    {
+                        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 1))
+                        {
+                            <div class="@cardColor(isDurum.Id)">
+                                <div class="card-header">
+                                    <i class="bi bi-envelope-fill text-muted"></i> <!-- Bootstrap Icons'taki mektup ikonu -->
+                                    <h5 class="card-title">@isDurum.isBaslık</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                                    <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                                    <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                                    <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                                    <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            Yapılmamış iş bulunmamaktadır.
+                        </div>
+                    }
+                </div>
+
+                <!-- Yapılan işler -->
+                <div class="tab-pane fade" id="list-completed" role="tabpanel" aria-labelledby="list-completed-list">
+                    @if (Model.isDurumlar.Any(i => i.Id == 3))
+                    {
+                        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 3))
+                        {
+                            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                                <div class="@cardColor(isDurum.Id)">
+                                    <div class="card-header">
+                                        <i class="bi bi-envelope-fill text-muted"></i> <!-- Bootstrap Icons'taki mektup ikonu -->
+                                        <h5 class="card-title">@isDurum.isBaslık</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            Yapılan iş bulunmamaktadır.
+                        </div>
+                    }
+                </div>
+
+                <!-- Güncellenen işler -->
+                <div class="tab-pane fade" id="list-updated" role="tabpanel" aria-labelledby="list-updated-list">
+                    @if (Model.isDurumlar.Any(i => i.Id == 2))
+                    {
+                        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 2))
+                        {
+                            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                                <div class="@cardColor(isDurum.Id)">
+                                    <div class="card-header">
+                                        <i class="bi bi-envelope-fill text-muted"></i> <!-- Bootstrap Icons'taki mektup ikonu -->
+                                        <h5 class="card-title">@isDurum.isBaslık</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            Güncellenen iş bulunmamaktadır.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Bootstrap tab aktivasyonu
+    $(document).ready(function () {
+        $('#list-tab a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // Son aktif sekmenin local storage kullanarak hatırlanması
+        $('#list-tab a').on('shown.bs.tab', function (e) {
+            var activeTab = $(e.target).attr('href');
+            localStorage.setItem('activeTab', activeTab);
+        });
+
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#list-tab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+</script>
+
+@*<!--@{
+    ViewBag.Title = "Takip";
+    Layout = "~/Views/Shared/LayoutCalisan.cshtml";
+
+    string cardColor(int? durumId)
+    {
+        if (durumId == 1)
+        {
+            return "card-custom bg-lightgray";
+        }
+        else if (durumId == 2)
+        {
+            return "card-custom bg-bisque";
+        }
+        else if (durumId == 3)
+        {
+            return "card-custom bg-lightgreen";
+        }
+        else
+        {
+            return "card-custom bg-light"; // varsayılan
+        }
+    }
+}
+
+@model isTakipMVC3.Models.IsDurumModel 
+
+<style>
+    .card-custom {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* daha belirgin gölge */
+        transition: transform 0.3s ease;
+    }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+
+    .bg-bisque {
+        background-color: rosybrown; /* rosybrown */
+    }
+
+
+
+    .bg-lightgray {
+        background-color: lavender; /* açık gri */
+    }
+
+    .bg-lightgreen {
+        background-color: #d9ead3; /* lightgreen */
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .list-group-item-action.active {
+        background-color: #87CEEB; /* Açık mavi arka plan rengi */
+        color: #fff; /* Beyaz yazı rengi */
+        border-color: #87CEEB; /* Açık mavi kenarlık rengi */
+    }
+
+    .list-group-item-action {
+        background-color: #f8f9fa; /* Varsayılan arka plan rengi */
+        color: #212529; /* Varsayılan yazı rengi */
+        border-color: #dee2e6; /* Varsayılan kenarlık rengi */
+    }
+
+        .list-group-item-action:hover {
+            background-color: #e9ecef; /* Varsayılan hover arka plan rengi */
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row">-->
+<!-- Sol taraftaki menü -->
+<!--<div class="col-md-3">
+    <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active bg-gray-dark" id="list-all-list" data-bs-toggle="list" href="#list-all" role="tab">Tümü</a>
+        <a class="list-group-item list-group-item-action bg-lightgray" id="list-completed-list" data-bs-toggle="list" href="#list-completed" role="tab">Tamamlanan İşler</a>
+        <a class="list-group-item list-group-item-action bg-light" id="list-updated-list" data-bs-toggle="list" href="#list-updated" role="tab">Güncellenen İşler</a>
+        <a class="list-group-item list-group-item-action bg-gradient" id="list-unfinished-list" data-bs-toggle="list" href="#list-unfinished" role="tab">Yapılmamış İşler</a>
+    </div>
+</div>-->
+<!-- İş kartları -->
+<!--<div class="col-md-9">
+    <div class="tab-content" id="nav-tabContent">-->
+<!-- Tüm işler -->
+<!--<div class="tab-pane fade show active" id="list-all" role="tabpanel" aria-labelledby="list-all-list">
+    @if (Model.isDurumlar != null && Model.isDurumlar.Any())
+    {
+        foreach (var isDurum in Model.isDurumlar)
+        {
+            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                <div class="@cardColor(isDurum.Id)">
+                    <div class="card-header">
+                        <i class="bi bi-envelope-fill text-muted"></i>-->
+ <!-- Bootstrap Icons'taki mektup ikonu -->
+<!--<h5 class="card-title">@isDurum.isBaslık</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Henüz iş verilmedi.
+        </div>
+    }
+</div>-->
+<!-- Yapılmamış İşler Sekmesi -->
+<!--<div class="tab-pane fade" id="list-unfinished" role="tabpanel" aria-labelledby="list-unfinished-list">
+    @if (Model.isDurumlar != null && Model.isDurumlar.Any(i => i.Id == 1))
+    {
+        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 1))
+        {
+            <div class="@cardColor(isDurum.Id)">
+                <div class="card-header">
+                    <i class="bi bi-envelope-fill text-muted"></i>-->
+ <!-- Bootstrap Icons'taki mektup ikonu -->
+<!--<h5 class="card-title">@isDurum.isBaslık</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                    <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                    <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                    <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                    <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Yapılmamış iş bulunmamaktadır.
+        </div>
+    }
+</div>-->
+<!-- Yapılan işler -->
+<!--<div class="tab-pane fade" id="list-completed" role="tabpanel" aria-labelledby="list-completed-list">
+    @if (Model.isDurumlar.Any(i => i.Id == 3))
+    {
+        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 3))
+        {
+            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                <div class="@cardColor(isDurum.Id)">
+                    <div class="card-header">
+                        <i class="bi bi-envelope-fill text-muted"></i>-->
+ <!-- Bootstrap Icons'taki mektup ikonu -->
+<!--<h5 class="card-title">@isDurum.isBaslık</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Yapılan iş bulunmamaktadır.
+        </div>
+    }
+</div>-->
+<!-- Güncellenen işler -->
+<!--<div class="tab-pane fade" id="list-updated" role="tabpanel" aria-labelledby="list-updated-list">
+    @if (Model.isDurumlar.Any(i => i.Id == 2))
+    {
+        foreach (var isDurum in Model.isDurumlar.Where(i => i.Id == 2))
+        {
+            <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+                <div class="@cardColor(isDurum.Id)">
+                    <div class="card-header">
+                        <i class="bi bi-envelope-fill text-muted"></i>-->
+ <!-- Bootstrap Icons'taki mektup ikonu -->
+<!--<h5 class="card-title">@isDurum.isBaslık</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">İş Açıklaması: @(string.IsNullOrEmpty(isDurum.isAciklama) ? "Açıklama yapılmadı" : isDurum.isAciklama)</p>
+                                        <p class="card-text">Başlanan ve iletilen tarih: @isDurum.baslanan_ve_iletilentarih</p>
+                                        <p class="card-text">Bitirilen ve yapılan tarih: @isDurum.bitirilen_ve_yapılantarih</p>
+                                        <p class="card-text">İş Durumu: @isDurum.durumlarAd</p>
+                                        <p class="card-text">İş Yorumu: @isDurum.isYorum</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            Güncellenen iş bulunmamaktadır.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Bootstrap tab aktivasyonu
+    $(document).ready(function () {
+        $('#list-tab a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // Son aktif sekmenin local storage kullanarak hatırlanması
+        $('#list-tab a').on('shown.bs.tab', function (e) {
+            var activeTab = $(e.target).attr('href');
+            localStorage.setItem('activeTab', activeTab);
+        });
+
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#list-tab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+</script>-->
+    *@

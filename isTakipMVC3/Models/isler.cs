@@ -14,15 +14,18 @@ namespace isTakipMVC3.Models
     
     public partial class isler
     {
+       
+
         public int isId { get; set; }
         public string isBaslık { get; set; }
-        public string isAcıklama { get; set; }
         public Nullable<int> isPersonelid { get; set; }
         public Nullable<System.DateTime> baslanan_ve_iletilentarih { get; set; }
         public Nullable<System.DateTime> bitirilen_ve_yapılantarih { get; set; }
         public Nullable<int> isDurumİd { get; set; }
         public string isYorum { get; set; }
         public Nullable<bool> isOkunma { get; set; }
+        public string fileName { get; set; }
+        public string isAciklama { get; set; }
     
         public virtual durumlar_ durumlar_ { get; set; }
         public virtual Personeller Personeller { get; set; }

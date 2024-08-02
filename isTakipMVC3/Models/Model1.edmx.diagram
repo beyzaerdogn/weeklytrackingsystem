@@ -7,7 +7,7 @@
       <Diagram DiagramId="134fd2a2350249ef8e73e64990c5f0b7" Name="Diagram1">
         <EntityTypeShape EntityType="İsTakipDBModel.Birimler" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="İsTakipDBModel.durumlar_" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="İsTakipDBModel.isler" Width="1.5" PointX="6.375" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="İsTakipDBModel.isler" Width="1.5" PointX="5.125" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="İsTakipDBModel.Personeller" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="İsTakipDBModel.yetkiTurid" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="İsTakipDBModel.FK_Personeller_Birimler" ManuallyRouted="false" />

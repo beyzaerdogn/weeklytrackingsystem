@@ -3,28 +3,53 @@
     Layout = "~/Views/Shared/LayoutCalisan.cshtml";
 }
 
-<h2>@ViewBag.birimAdı birimi için çalışansınız</h2>
-<div class="container mt-5">
-    <div class="row">
-        @foreach (var i in ViewBag.isler)
-        {
-            using (Html.BeginForm("Index", "Calisan", FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-12 col-xs-12" }))
+<div class="board">
+    <div class="board-header">
+        <h2>@ViewBag.birimAdı birimi çalışanısınız</h2>
+    </div>
+    <div class="board-body">
+        <div class="container mt-5">
+            @if (ViewBag.isler == null || ViewBag.isler.Count == 0)
             {
-                <div class="card border-info">
-                    <div class="card-header text-center">
-                        Yeni İş :)
-                    </div>
-                    <div class="card-body">
-                        <input type="hidden" name="isId" value="@i.isId" />
-                        <div class="mb-3">
-                            <h5 class="card-title">@i.isBaslık</h5>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-info">Oku</button>
-                    </div>
+                <div class="alert alert-info" role="alert">
+                    Henüz iş yok.
                 </div>
             }
-        }
+            else
+            {
+                <div class="row">
+                    @foreach (var i in ViewBag.isler)
+                    {
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-4">
+                            @using (Html.BeginForm("Index", "Calisan", FormMethod.Post, new { @class = "card border-info" }))
+                            {
+                                <div class="card-header text-center">
+                                    Yeni İş
+                                </div>
+                                <div class="card-body">
+                                    <input type="hidden" name="isId" value="@i.isId" />
+                                    <div class="mb-3">
+                                        <h5 class="card-title">@i.isBaslık</h5>
+                                     
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-block btn-success btn-lg">Oku</button>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
     </div>
 </div>
+
+<style>
+    .board {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+</style>

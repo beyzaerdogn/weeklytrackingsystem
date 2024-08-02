@@ -11,9 +11,10 @@ namespace isTakipMVC3.Controllers
         // GET: Logout
         public ActionResult Index()
         {
-            Session.Abandon(); //BOŞALTCAK
+            Session.Abandon(); //BOŞALTıCAK
 
             return RedirectToAction("Index","Login");
         }
+
     }
 }
