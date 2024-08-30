@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "UploadFile";
+}
+
+<h2>Dosya Yükle</h2>
+
+@using (Html.BeginForm("AddFile", "DosyaAdd", FormMethod.Post, new { enctype = "multipart/form-data", id = "uploadForm" }))
+{
+    <div>
+        @Html.TextBox("file", "", new { type = "file", id = "fileInput" }) <br />
+        <input type="submit" value="Yükle" id="uploadButton" />
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info mt-3">
+        @ViewBag.Message
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        document.getElementById("uploadForm").onsubmit = function (event) {
+            var fileInput = document.getElementById("fileInput");
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var maxSize = 200 * 1024 * 1024; // 200MB in bytes
+                if (file.size > maxSize) {
+                    alert("Dosya boyutu 200 MB'ı geçmemelidir.");
+                    event.preventDefault(); // Prevent the form from submitting
+                }
+            }
+        };
+    </script>
+}

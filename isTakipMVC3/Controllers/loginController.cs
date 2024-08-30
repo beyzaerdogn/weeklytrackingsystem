@@ -26,6 +26,8 @@ namespace isTakipMVC3.Controllers
                 Session["PersonelId"]= personel.personelid;
                 Session["PersonelBirimId"] = personel.personelBirimid;
                 Session["PersonelYetkiTurId"] = personel.personelyetkiturid;
+
+
                 switch (personel.personelyetkiturid)
 
                 {  //yönetici ise 1 kullanılır

@@ -1,0 +1,194 @@
+﻿@model List<isTakipMVC3.Models.IsDurumModel>
+@{
+    ViewBag.Title = "Güncellenecek İşler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="mb-3">
+        <h3>İş Açıklamasını Güncelle</h3>
+    </div>
+
+    @if (ViewBag.isSayisi != 0)
+    {
+        foreach (var i in (List<isTakipMVC3.Models.isler>)ViewBag.isler)
+        {
+            // Mevcut işin birim ID'si ile yöneticinin birim ID'sini kontrol et
+            if (i.Personeller.personelBirimid == Convert.ToInt16(Session["PersonelBirimId"]))
+            {
+                <div class="card mb-3">
+                    <div class="card-header bg-gray-dark text-center text-white">
+                        @i.isBaslık
+                        <span class="badge bg-primary">@i.Personeller.personelAdSoyad</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Yönetici İş Açıklaması:</strong> @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Başlanan ve iletilen tarih:</strong> @i.baslanan_ve_iletilentarih
+                        </li>
+                        <li class="list-group-item">
+                            <strong>İş Durumu:</strong> @i.durumlar_.durumlarAd
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Çalışan İş Yorumu:</strong> @(string.IsNullOrEmpty(i.isYorum) ? "Yorum yapılmadı" : i.isYorum)
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                @using (Html.BeginForm("Guncelleme", "Yonetici", FormMethod.Post))
+                                {
+                                    @Html.Hidden("id", i.isId)
+                                    <div class="form-group">
+                                        @Html.Label("Yeni Açıklama:")
+                                        @Html.TextArea("isAciklama", "", new { @class = "form-control small-textarea", rows = 1, required = "required" })
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Güncelle</button>
+                                }
+                                @using (Html.BeginForm("Sil", "Yonetici", new { id = i.isId }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu işi silmek istediğinizden emin misiniz?');">Sil</button>
+                                }
+                                @if (i.fileName != null)
+                                {
+                                    using (Html.BeginForm("DosyaIndir", "Yonetici", new { dosyaAdi = i.fileName }, FormMethod.Post))
+                                    {
+                                        <button class="btn btn-outline-primary btn-sm" type="submit">Dosya İndir</button>
+                                    }
+                                }
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Güncellenecek iş bulunamadı.
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@model List < isTakipMVC3.Models.IsDurumModel >
+        @{
+        ViewBag.Title = "GuncellenecekIsler";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <div class="container mt-5">
+        <div class="mb-3">
+            <h3>Güncelleme</h3>
+        </div>
+
+        @if (ViewBag.isSayisi != 0)
+        {
+            foreach (var i in (List<isTakipMVC3.Models.isler>)ViewBag.isler)
+            {
+                <div class="card mb-3">
+                    <div class="card-header bg-gray-dark text-center text-white">
+                        @i.isBaslık
+                        <span class="badge bg-primary">@i.Personeller.personelAdSoyad</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>İş Açıklama:</strong> @(string.IsNullOrEmpty(i.isAciklama) ? "Açıklama yapılmadı" : i.isAciklama)</li>
+                        <li class="list-group-item"><strong>Başlanan ve iletilen tarih:</strong> @i.baslanan_ve_iletilentarih</li>
+                        <li class="list-group-item"><strong>İş Durumu:</strong> @i.durumlar_.durumlarAd</li>
+                        <li class="list-group-item"><strong>İş Yorumu:</strong> @(string.IsNullOrEmpty(i.isYorum) ? "Yorum yapılmadı" : i.isYorum)</li>
+
+                        <li class="list-group-item">
+                            @using (Html.BeginForm("Guncelleme", "Yonetici", FormMethod.Post))
+                            {
+                                @Html.Hidden("id", i.isId)
+                                <div class="form-group">
+                                    @Html.Label("Yorum Giriniz:")
+                                    @Html.TextArea("isYorum", null, new { @class = "form-control", rows = 1, required = "required" })
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Güncelleme</button>
+                            }
+                        </li>
+                    </ul>
+                </div>
+
+            }
+        }
+        else
+        {
+            <div class="alert alert-secondary" role="alert">
+                Güncellenecek iş bulunamadı.
+            </div>
+        }
+    </div>
+
+*@

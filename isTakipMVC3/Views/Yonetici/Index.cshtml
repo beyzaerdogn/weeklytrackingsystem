@@ -1,8 +1,28 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<div style="margin-top: 20px;"></div>
+
+
 <h2>@ViewBag.birimAdı birimi için yetkilisiniz</h2>
+
+@if (ViewBag.yeniTamamlananGorevVar == true)
+{
+    <div class="alert alert-success" role="alert">
+        Yeni bir görev güncellemesi var!
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        Yeni bir güncelleme yok.
+    </div>
+}
+
+<div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__wobble" src="AdminLTE-3.2.0/erciyesbilgi.jpg" alt="AdminLTELogo" height="100" width="100">
+</div>
 
